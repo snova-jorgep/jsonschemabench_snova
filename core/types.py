@@ -123,6 +123,24 @@ class PerfMetrics:
 
 
 @dataclass
+class Metric:
+    values: List[float] = field(default_factory=list)
+    std: Optional[float] = None
+    min: Optional[float] = None
+    max: Optional[float] = None
+    median: Optional[float] = None
+
+
+@dataclass
+class AggregatedPerfMetrics:
+    ttft: Metric = field(default_factory=Metric)
+    tpot: Metric = field(default_factory=Metric)
+    tgt: Metric = field(default_factory=Metric)
+    gct: Metric = field(default_factory=Metric)
+    prft: Metric = field(default_factory=Metric)
+
+
+@dataclass
 class GenerationOutput:
     """Output of a generation run."""
 

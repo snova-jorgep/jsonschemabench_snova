@@ -9,7 +9,12 @@ MessagesFormatter = Callable[[str, "Schema"], List[Message]]
 
 
 def few_shots_messages_formatter(task: str, schema: "Schema") -> List[Message]:
-    examples = [value for key, value in EXAMPLES_FOR_TASK.items() if task in key]
+    examples = [
+        example
+        for key, examples in EXAMPLES_FOR_TASK.items()
+        if task in key
+        for example in examples
+    ]
 
     messages = [
         {

@@ -1,12 +1,18 @@
+import numpy as np
 from uuid import UUID
 from json import loads
-from prettytable import PrettyTable
-from typing import List, Tuple, Optional
+from typing import List, Tuple
 from ipaddress import IPv4Address, IPv6Address
 from jsonschema import Draft202012Validator, FormatChecker, SchemaError
 
-from core.utils import safe_divide, median, detect_none
-from core.types import Schema, CompileStatusCode, GenerationOutput, PerfMetrics
+from core.utils import bootstrap
+from core.types import (
+    Schema,
+    CompileStatusCode,
+    GenerationOutput,
+    AggregatedPerfMetrics,
+    Metric,
+)
 
 
 def is_json_schema_valid(schema: Schema):
@@ -50,9 +56,10 @@ def validate_json_schema(instance: Schema, schema: Schema) -> bool:
 
 def evaluate(
     outputs: List[GenerationOutput],
-) -> Tuple[Optional[float], Optional[float], Optional[float], PerfMetrics]:
-    declared_coverage = 0
-    empirical_coverage = 0
+) -> Tuple[Metric, Metric, Metric, AggregatedPerfMetrics, Metric]:
+    output_tokens_list = []
+    declared_coverage_list = []
+    empirical_coverage_list = []
 
     for generation_output in outputs:
         generation = generation_output.generation
@@ -62,17 +69,22 @@ def evaluate(
             continue
 
         if generation_output.metadata.compile_status.code == CompileStatusCode.OK:
-            declared_coverage += 1
+            declared_coverage_list.append(1)
+        else:
+            declared_coverage_list.append(0)
 
         try:
             json_object = loads(generation)
         except Exception:
+            empirical_coverage_list.append(0)
             continue
 
         if not validate_json_schema(json_object, schema):
+            empirical_coverage_list.append(0)
             continue
 
-        empirical_coverage += 1
+        empirical_coverage_list.append(1)
+        output_tokens_list.append(generation_output.token_usage.output_tokens)
 
     ttft_list = [
         generation_output.perf_metrics.ttft
@@ -95,51 +107,71 @@ def evaluate(
         if generation_output.perf_metrics.gct is not None
     ]
 
+    compliance_list = [
+        ec for ec, dc in zip(empirical_coverage_list, declared_coverage_list) if dc == 1
+    ]
+
+    dc_mean_list = bootstrap(declared_coverage_list, np.mean)
+    ec_mean_list = bootstrap(empirical_coverage_list, np.mean)
+    c_mean_list = bootstrap(compliance_list, np.mean)
+
     return (
-        safe_divide(declared_coverage, len(outputs)),
-        safe_divide(empirical_coverage, len(outputs)),
-        safe_divide(empirical_coverage, declared_coverage),
-        PerfMetrics(
-            ttft=median(ttft_list),
-            tpot=median(tpot_list),
-            tgt=median(tgt_list),
-            gct=median(gct_list),
+        Metric(
+            values=dc_mean_list,
+            median=np.median(dc_mean_list),
+            min=min(dc_mean_list),
+            max=max(dc_mean_list),
+            std=np.std(dc_mean_list),
+        ),
+        Metric(
+            values=ec_mean_list,
+            median=np.median(ec_mean_list),
+            min=min(ec_mean_list),
+            max=max(ec_mean_list),
+            std=np.std(ec_mean_list),
+        ),
+        Metric(
+            values=c_mean_list,
+            median=np.median(c_mean_list),
+            min=min(c_mean_list),
+            max=max(c_mean_list),
+            std=np.std(c_mean_list),
+        ),
+        AggregatedPerfMetrics(
+            ttft=Metric(
+                values=ttft_list,
+                median=np.median(ttft_list),
+                min=min(ttft_list),
+                max=max(ttft_list),
+                std=np.std(ttft_list),
+            ),
+            tpot=Metric(
+                values=tpot_list,
+                median=np.median(tpot_list),
+                min=min(tpot_list),
+                max=max(tpot_list),
+                std=np.std(tpot_list),
+            ),
+            tgt=Metric(
+                values=tgt_list,
+                median=np.median(tgt_list),
+                min=min(tgt_list),
+                max=max(tgt_list),
+                std=np.std(tgt_list),
+            ),
+            gct=Metric(
+                values=gct_list,
+                median=np.median(gct_list),
+                min=min(gct_list),
+                max=max(gct_list),
+                std=np.std(gct_list),
+            ),
+        ),
+        Metric(
+            values=output_tokens_list,
+            median=np.median(output_tokens_list),
+            min=min(output_tokens_list),
+            max=max(output_tokens_list),
+            std=np.std(output_tokens_list),
         ),
     )
-
-
-def print_scores(
-    declared_coverage: List[Optional[float]],
-    empirical_coverage: List[Optional[float]],
-    compliance: List[Optional[float]],
-    perf_metrics: List[PerfMetrics],
-    tasks: List[str],
-) -> None:
-    table = PrettyTable(
-        [
-            "Task",
-            "Declared coverage",
-            "Empirical coverage",
-            "Compliance",
-            "TTFT (s)",
-            "TPOT (ms)",
-            "TGT (s)",
-            "GCT (s)",
-        ]
-    )
-    for task, dc, ec, cl, pm in zip(
-        tasks, declared_coverage, empirical_coverage, compliance, perf_metrics
-    ):
-        table.add_row(
-            [
-                task,
-                detect_none(dc),
-                detect_none(ec),
-                detect_none(cl),
-                detect_none(pm.ttft),
-                detect_none(pm.tpot),
-                detect_none(pm.tgt),
-                detect_none(pm.gct),
-            ]
-        )
-    print(table)

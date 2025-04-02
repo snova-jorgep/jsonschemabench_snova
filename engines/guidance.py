@@ -44,7 +44,7 @@ class GuidanceEngine(Engine[GuidanceConfig]):
         )
 
         self.guidance_model_state = LlamaCpp(self.model, echo=False)
-        
+
         self.tokenizer = self.guidance_model_state.engine.tokenizer
         self.formatter = LlamaCppEngine.get_chat_formatter(self.model)
 

@@ -1,9 +1,11 @@
 #!/bin/bash
 
-if [ ! -d "/jsonschemabench" ]; then
-  git clone https://github.com/epfl-dlab/jsonschemabench.git /jsonschemabench
+. /opt/conda/etc/profile.d/conda.sh
+
+if [ ! -d "/home/jsonschemabench" ]; then
+  git clone https://github.com/epfl-dlab/jsonschemabench.git /home/jsonschemabench
 else
-  cd /jsonschemabench && git pull
+  cd /home/jsonschemabench && git pull
 fi
 
 conda activate default
