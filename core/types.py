@@ -1,10 +1,11 @@
+import numpy as np
 from enum import Enum
 from uuid import uuid4
 from dataclasses import dataclass, field
 from typing import List, Dict, Any, Optional
 
 from core.messages import Message
-from core.utils import safe_divide, safe_subtract
+from core.utils import safe_divide, safe_subtract, safe_reduce
 
 
 Schema = Dict[str, Any]
@@ -125,10 +126,20 @@ class PerfMetrics:
 @dataclass
 class Metric:
     values: List[float] = field(default_factory=list)
-    std: Optional[float] = None
     min: Optional[float] = None
     max: Optional[float] = None
     median: Optional[float] = None
+    std: Optional[float] = None
+
+    @classmethod
+    def from_values(cls, values: List[float]) -> "Metric":
+        return cls(
+            values=values,
+            min=safe_reduce(values, min),
+            max=safe_reduce(values, max),
+            median=safe_reduce(values, np.median),
+            std=safe_reduce(values, np.std),
+        )
 
 
 @dataclass

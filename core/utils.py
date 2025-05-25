@@ -40,9 +40,15 @@ def safe_subtract(a: Optional[float], b: Optional[float]) -> Optional[float]:
 
 
 def safe_min(a: int, b: Optional[int]) -> int:
+    """Safely finds the minimum of a and b, returning a if b is None."""
     if b is None:
         return a
     return min(a, b)
+
+
+def safe_reduce(a: List[T], func: Callable[[List[T]], T]) -> Optional[T]:
+    """Safely reduces a list of values using a function, returning None if the list is empty."""
+    return func(a) if a else None
 
 
 def format_metric(metric: "Metric", details: bool = False) -> str:
