@@ -161,11 +161,11 @@ def evaluate(
             ),
             gct=Metric(
                 values=gct_list,
-                median=np.median(gct_list),
-                min=min(gct_list),
-                max=max(gct_list),
-                std=np.std(gct_list),
-            ),
+                median=np.median(gct_list) if len(gct_list) > 0 else None,
+                min=min(gct_list) if len(gct_list) > 0 else None,
+                max=max(gct_list) if len(gct_list) > 0 else None,
+                std=np.std(gct_list) if len(gct_list) > 0 else None,
+            ),# gct is nodefined for remote engines run on cloud like openai, for which we can not measure the compilation time
         ),
         Metric(
             values=output_tokens_list,
