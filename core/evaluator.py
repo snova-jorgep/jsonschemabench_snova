@@ -116,62 +116,14 @@ def evaluate(
     c_mean_list = bootstrap(compliance_list, np.mean)
 
     return (
-        Metric(
-            values=dc_mean_list,
-            median=np.median(dc_mean_list),
-            min=min(dc_mean_list),
-            max=max(dc_mean_list),
-            std=np.std(dc_mean_list),
-        ),
-        Metric(
-            values=ec_mean_list,
-            median=np.median(ec_mean_list),
-            min=min(ec_mean_list),
-            max=max(ec_mean_list),
-            std=np.std(ec_mean_list),
-        ),
-        Metric(
-            values=c_mean_list,
-            median=np.median(c_mean_list),
-            min=min(c_mean_list),
-            max=max(c_mean_list),
-            std=np.std(c_mean_list),
-        ),
+        Metric.from_values(dc_mean_list),
+        Metric.from_values(ec_mean_list),
+        Metric.from_values(c_mean_list),
         AggregatedPerfMetrics(
-            ttft=Metric(
-                values=ttft_list,
-                median=np.median(ttft_list),
-                min=min(ttft_list),
-                max=max(ttft_list),
-                std=np.std(ttft_list),
-            ),
-            tpot=Metric(
-                values=tpot_list,
-                median=np.median(tpot_list),
-                min=min(tpot_list),
-                max=max(tpot_list),
-                std=np.std(tpot_list),
-            ),
-            tgt=Metric(
-                values=tgt_list,
-                median=np.median(tgt_list),
-                min=min(tgt_list),
-                max=max(tgt_list),
-                std=np.std(tgt_list),
-            ),
-            gct=Metric(
-                values=gct_list,
-                median=np.median(gct_list) if len(gct_list) > 0 else None,
-                min=min(gct_list) if len(gct_list) > 0 else None,
-                max=max(gct_list) if len(gct_list) > 0 else None,
-                std=np.std(gct_list) if len(gct_list) > 0 else None,
-            ),# gct is nodefined for remote engines run on cloud like openai, for which we can not measure the compilation time
+            ttft=Metric.from_values(ttft_list),
+            tpot=Metric.from_values(tpot_list),
+            tgt=Metric.from_values(tgt_list),
+            gct=Metric.from_values(gct_list),
         ),
-        Metric(
-            values=output_tokens_list,
-            median=np.median(output_tokens_list),
-            min=min(output_tokens_list),
-            max=max(output_tokens_list),
-            std=np.std(output_tokens_list),
-        ),
+        Metric.from_values(output_tokens_list),
     )
