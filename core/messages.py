@@ -8,13 +8,22 @@ Message = Dict[str, Any]
 MessagesFormatter = Callable[[str, "Schema"], List[Message]]
 
 
-def few_shots_messages_formatter(task: str, schema: "Schema") -> List[Message]:
+def few_shots_messages_formatter(task: str, schema: "Schema", num_shots: int = None) -> List[Message]:
     examples = [
         example
         for key, examples in EXAMPLES_FOR_TASK.items()
         if task in key
         for example in examples
     ]
+
+    # Important to be explicit below, because num_shots CAN BE 0.
+    if num_shots is not None: 
+        assert num_shots <= len(examples), (
+            f"num_shots ({num_shots}) cannot be greater than the number of examples for task {task} "
+            f"({len(examples)})"
+        )
+    else:
+        num_shots = min(len(examples), 5)
 
     messages = [
         {
@@ -23,7 +32,7 @@ def few_shots_messages_formatter(task: str, schema: "Schema") -> List[Message]:
         }
     ]
 
-    for input, output in examples:
+    for input, output in examples[:num_shots]:
         messages.append({"role": "user", "content": input})
         messages.append({"role": "assistant", "content": output})
 
