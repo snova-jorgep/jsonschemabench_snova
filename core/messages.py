@@ -16,7 +16,7 @@ def few_shots_messages_formatter(task: str, schema: "Schema", num_shots: int = N
         for example in examples
     ]
 
-    # Important to be explicit below, becuase num_shots CAN BE 0.
+    # Important to be explicit below, because num_shots CAN BE 0.
     if num_shots is not None: 
         assert num_shots <= len(examples), (
             f"num_shots ({num_shots}) cannot be greater than the number of examples for task {task} "
