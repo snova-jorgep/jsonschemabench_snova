@@ -59,7 +59,7 @@ def bench(
             desc=task,
             file=sys.stdout,
         ):
-            with disable_print():
+            # with disable_print(): # TODO uncomment later
                 schema = engine.adapt_schema(schema)
                 result = engine.generate(task, messages, schema)
                 task_outputs.append(result)
