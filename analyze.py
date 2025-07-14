@@ -18,7 +18,7 @@ if __name__ == "__main__":
         engine_config = loads(f.readline())
         outputs = [
             from_dict(GenerationOutput, loads(line), config=dacite_config)
-            for line in f.readlines()[1:]
+            for line in f.readlines()[0:]
         ]
 
     task_outputs: Dict[str, List[GenerationOutput]] = {}
