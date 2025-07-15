@@ -1,5 +1,7 @@
 import os
 import sys
+import threading
+from pathlib import Path
 from tqdm import tqdm
 from json import dumps
 from dataclasses import asdict
@@ -9,9 +11,10 @@ from core.engine import Engine
 from core.evaluator import evaluate
 from core.types import GenerationOutput
 from core.dataset import Dataset, DatasetConfig
-from core.utils import disable_print, nanoid, safe_min, print_scores, save_evaluation_summary_to_csv
+from core.utils import disable_print, nanoid, safe_min, print_scores, save_evaluation_results_to_csv, upload_to_s3
 from core.messages import MessagesFormatter, FEW_SHOTS_MESSAGES_FORMATTER
 
+write_lock = threading.Lock() 
 
 def bench(
     engine: Engine,
@@ -50,20 +53,16 @@ def bench(
     id = nanoid()
     
     if save_outputs:
-        if not os.path.exists(output_path):
-            os.makedirs(output_path)
-
-        engine_dir = f"{output_path}/{engine.name}"
-        if not os.path.exists(engine_dir):
-            os.makedirs(engine_dir)
+        output_path = Path(output_path)
+        engine_dir = output_path / engine.name
+        engine_dir.mkdir(parents=True, exist_ok=True)
 
         if engine.name == "openai_compatible":
-            provider_dir = f"{engine_dir}/{engine.config.provider}"
-            if not os.path.exists(provider_dir):
-                os.makedirs(provider_dir)
-            save_json_output_path = f"{provider_dir}/{engine.config.tokenizer.replace('/', '_')}.jsonl"
+            provider_dir = engine_dir / engine.config.provider
+            provider_dir.mkdir(parents=True, exist_ok=True)
+            save_json_output_path = provider_dir / f"{engine.config.tokenizer.replace('/', '_')}.jsonl"
         else:
-            save_json_output_path = f"{engine_dir}/{id}.jsonl"
+            save_json_output_path = engine_dir / f"{id}.jsonl"
 
         with open(save_json_output_path, "w") as f:
             f.write(f"{dumps({'engine': engine.name, 'engine_config': asdict(engine.config)})}\n")
@@ -80,7 +79,7 @@ def bench(
     empirical_coverage = []
     
     for task, mf in zip(tasks, messages_formatter):
-        print(f"# Running Task {task}")
+        print(f"# Running Task {task} for engine {engine.name}, with provider {getattr(engine.config, 'provider', 'n/a')} for model {getattr(engine.config, 'model', 'n/a')}")
         task_outputs = []
         dataset = Dataset(DatasetConfig(task, limit=limit))
         for messages, schema in tqdm(
@@ -89,7 +88,7 @@ def bench(
             desc=task,
             file=sys.stdout,
         ):
-            # with disable_print(): # TODO uncomment later
+            with disable_print(): # comment to debug
                 schema = engine.adapt_schema(schema)
                 result = engine.generate(task, messages, schema)
                 task_outputs.append(result)
@@ -105,8 +104,10 @@ def bench(
             with open(save_json_output_path, "a") as f:
                 for output in evaluated_outputs:
                     f.write(f"{dumps(asdict(output))}\n")
-            save_evaluation_summary_to_csv(
-                f"{engine_dir}/eval_results.csv",
+                    
+            results_path = engine_dir / "eval_results.csv"
+            save_evaluation_results_to_csv(
+                csv_path=results_path,
                 run_id=output_path.name or id,
                 provider = getattr(engine.config, "provider", "n/a"),
                 model = getattr(engine.config, "tokenizer", "n/a"),
@@ -115,9 +116,12 @@ def bench(
                 ec=ec,
                 cl=cl,
                 pm=pm,  
-                ot=ot
+                ot=ot,
+                write_lock=write_lock
             )
-        
+            s3_path=f"fc-so-testing-suite/jsonschemabench_snova/{'/'.join(results_path.parts[-3:])}"
+            upload_to_s3(results_path, s3_path)
+            
         all_outputs.append(evaluated_outputs)
         
     print_scores(
