@@ -22,6 +22,7 @@ def bench(
     ] = FEW_SHOTS_MESSAGES_FORMATTER,
     close_engine: bool = True,
     save_outputs: bool = False,
+    output_path: Optional[str] = "outputs"
 ) -> List[List[GenerationOutput]]:
     """Benchmarks an engine with specified tasks and datasets.
 
@@ -40,6 +41,8 @@ def bench(
         Whether to close the engine after the benchmark.
     :param save_outputs: bool
         Whether to save the generation outputs after the benchmark.
+    :param output_path: Optional[str]
+        where to save the generation results
 
     :return: List[List[GenerationOutput]]
         The generation outputs for each sample for each task.
@@ -70,8 +73,9 @@ def bench(
     output_tokens = []
     declared_coverage = []
     empirical_coverage = []
+    all_evaluated_outputs = []
     for outputs in all_outputs:
-        dc, ec, cl, pm, ot = evaluate(outputs)
+        dc, ec, cl, pm, ot , evaluated_outputs= evaluate(outputs)
 
         compliance.append(cl)
         perf_metrics.append(pm)
@@ -79,6 +83,8 @@ def bench(
         empirical_coverage.append(ec)
         output_tokens.append(ot)
 
+        all_evaluated_outputs.append(evaluated_outputs)
+        
     print_scores(
         declared_coverage,
         empirical_coverage,
@@ -89,22 +95,29 @@ def bench(
     )
 
     if save_outputs:
-        if not os.path.exists("outputs"):
-            os.makedirs("outputs")
+        if not os.path.exists(output_path):
+            os.makedirs(output_path)
 
-        if not os.path.exists(f"outputs/{engine.name}"):
-            os.makedirs(f"outputs/{engine.name}")
+        if not os.path.exists(f"{output_path}/{engine.name}"):
+            os.makedirs(f"{output_path}/{engine.name}")
+            
+        if engine.name == "openai_compatible":
+            if not os.path.exists(f"{output_path}/{engine.name}/{engine.config.provider}"):
+                os.makedirs(f"{output_path}/{engine.name}/{engine.config.provider}")
+            save_json_output_path = f"{output_path}/{engine.name}/{engine.config.provider}/{engine.config.model.replace('/','_')}.jsonl"
+        else:
+            save_json_output_path = f"{output_path}/{engine.name}/{id}.jsonl"
 
-        with open(f"outputs/{engine.name}/{id}.jsonl", "w") as f:
+        with open(save_json_output_path, "w") as f:
             f.write(
                 f"{dumps({'engine': engine.name, 'engine_config': asdict(engine.config)})}\n"
             )
 
-            for outputs in all_outputs:
+            for outputs in all_evaluated_outputs:
                 for output in outputs:
                     f.write(f"{dumps(asdict(output))}\n")
 
-        print(f"Outputs saved to outputs/{engine.name}/{id}.jsonl")
+        print(f"Outputs saved to {save_json_output_path}")
 
     if close_engine:
         engine.close()

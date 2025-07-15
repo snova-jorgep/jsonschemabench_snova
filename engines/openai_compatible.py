@@ -20,6 +20,7 @@ from core.types import (
 class OpenAICompatibleConfig(EngineConfig):
     model: str
     tokenizer: str
+    provider: str
     base_url: str
     api_key_variable_name: str
     max_tokens: Optional[int] = None
@@ -68,19 +69,25 @@ class OpenAICompatibleEngine(Engine[OpenAICompatibleConfig]):
             return
 
         tokens_str: List[str] = []
-        for i, chunk in enumerate(response):
-            if i == 0:
-                first_token_arrival_time = time()
+        try:
+            for i, chunk in enumerate(response):
+                if i == 0:
+                    first_token_arrival_time = time()
 
-            if len(chunk.choices) == 0 or (chunk.choices[0].finish_reason is not None and chunk.choices[0].finish_reason != "stop"):
-                continue
+                if len(chunk.choices) == 0 or (chunk.choices[0].finish_reason is not None and chunk.choices[0].finish_reason != "stop"):
+                    continue
 
-            chunk_content = chunk.choices[0].delta.content
-            if chunk_content == "" or chunk_content is None:
-                continue
+                chunk_content = chunk.choices[0].delta.content
+                if chunk_content == "" or chunk_content is None:
+                    continue
 
-            tokens_str.append(chunk_content)
-
+                tokens_str.append(chunk_content)
+        except Exception as e:
+            output.metadata.compile_status = CompileStatus(
+                code=CompileStatusCode.API_BAD_RESPONSE, message=str(e)
+            )
+            return
+        
         output.token_usage.output_tokens = chunk.usage.completion_tokens
         output.metadata.first_token_arrival_time = first_token_arrival_time
         output.metadata.compile_status = CompileStatus(code=CompileStatusCode.OK)

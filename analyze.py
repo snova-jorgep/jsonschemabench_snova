@@ -33,7 +33,7 @@ if __name__ == "__main__":
     declared_coverage = []
     empirical_coverage = []
     for outputs in task_outputs.values():
-        dc, ec, cl, pm, ot = evaluate(outputs)
+        dc, ec, cl, pm, ot, _ = evaluate(outputs)
 
         compliance.append(cl)
         perf_metrics.append(pm)

@@ -1,6 +1,7 @@
 {
     "base_url":"https://api.sambanova.ai/v1",
     "api_key_variable_name": "SAMBANOVA_API_KEY",
+    "provider": "sambanova",
     "model":"Llama-4-Maverick-17B-128E-Instruct",
     "tokenizer":"meta-llama/Llama-4-Maverick-17B-128E-Instruct",
     "temperature":0.0,

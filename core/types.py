@@ -72,6 +72,8 @@ class Token:
 class GenerationMetadata:
     first_token_arrival_time: Optional[float] = None
     grammar_compilation_end_time: Optional[float] = None
+    failure: Optional[bool] = None
+    failure_type: Optional[str] = None
     compile_status: Optional[CompileStatus] = field(default_factory=CompileStatus)
     decoding_status: Optional[DecodingStatus] = field(default_factory=DecodingStatus)
 
