@@ -34,4 +34,4 @@ if __name__ == "__main__":
     )
     end_time = datetime.now()
     delta_time = end_time - start_time
-    print(f"Ran in: {delta_time} s")
+    print(f"Ran in: {delta_time}")

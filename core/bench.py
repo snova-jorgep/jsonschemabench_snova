@@ -104,7 +104,7 @@ def bench(
         if engine.name == "openai_compatible":
             if not os.path.exists(f"{output_path}/{engine.name}/{engine.config.provider}"):
                 os.makedirs(f"{output_path}/{engine.name}/{engine.config.provider}")
-            save_json_output_path = f"{output_path}/{engine.name}/{engine.config.provider}/{engine.config.model.replace('/','_')}.jsonl"
+            save_json_output_path = f"{output_path}/{engine.name}/{engine.config.provider}/{engine.config.tokenizer.replace('/','_')}.jsonl"
         else:
             save_json_output_path = f"{output_path}/{engine.name}/{id}.jsonl"
 
