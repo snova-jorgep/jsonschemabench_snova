@@ -9,6 +9,9 @@ import matplotlib.pyplot as plt
 from prettytable import PrettyTable
 from contextlib import contextmanager
 from typing import List, Optional, TypeVar, Type, TYPE_CHECKING, Callable
+import csv
+import threading
+from datetime import datetime
 
 
 if TYPE_CHECKING:
@@ -136,6 +139,42 @@ def print_scores(
         table.add_row(row, divider=details)
     print(table)
 
+
+write_lock = threading.Lock() 
+def save_evaluation_summary_to_csv(
+    csv_path: str,
+    run_id:str,
+    provider: Optional[str] = None,
+    model: Optional[str] = None,
+    task: Optional[str] = None,
+    dc: Optional["Metric"] = None,
+    ec: Optional["Metric"] = None,
+    cl: Optional["Metric"] = None,
+    pm: Optional["AggregatedPerfMetrics"] = None,
+    ot: Optional["Metric"] = None,
+):
+    row = {
+        "run_id": run_id,
+        "provider": provider,
+        "model": model,
+        "task": task,
+        "declared_coverage": format_metric(dc),
+        "empirical_coverage": format_metric(ec),
+        "compliance": format_metric(cl),
+        "ttft": format_metric(pm.ttft) if pm else "n/a",
+        "tpot": format_metric(pm.tpot) if pm else "n/a",
+        "tgt": format_metric(pm.tgt) if pm else "n/a",
+        "gct": format_metric(pm.gct) if pm else "n/a",
+        "output_tokens": format_metric(ot),
+    }
+
+    with write_lock:
+        file_exists = os.path.exists(csv_path)
+        with open(csv_path, "a", newline="") as f:
+            writer = csv.DictWriter(f, fieldnames=row.keys(), delimiter=';')
+            if not file_exists:
+                writer.writeheader()
+            writer.writerow(row)
 
 def plot_perf_metrics(
     perf_metrics: List["AggregatedPerfMetrics"],

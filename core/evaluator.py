@@ -56,7 +56,7 @@ def validate_json_schema(instance: Schema, schema: Schema) -> bool:
 
 def evaluate(
     outputs: List[GenerationOutput],
-) -> Tuple[Metric, Metric, Metric, AggregatedPerfMetrics, Metric]:
+) -> Tuple[Metric, Metric, Metric, AggregatedPerfMetrics, Metric, List[GenerationOutput]]:
     output_tokens_list = []
     declared_coverage_list = []
     empirical_coverage_list = []

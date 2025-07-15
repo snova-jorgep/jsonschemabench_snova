@@ -9,7 +9,7 @@ from core.engine import Engine
 from core.evaluator import evaluate
 from core.types import GenerationOutput
 from core.dataset import Dataset, DatasetConfig
-from core.utils import disable_print, nanoid, safe_min, print_scores
+from core.utils import disable_print, nanoid, safe_min, print_scores, save_evaluation_summary_to_csv
 from core.messages import MessagesFormatter, FEW_SHOTS_MESSAGES_FORMATTER
 
 
@@ -105,6 +105,18 @@ def bench(
             with open(save_json_output_path, "a") as f:
                 for output in evaluated_outputs:
                     f.write(f"{dumps(asdict(output))}\n")
+            save_evaluation_summary_to_csv(
+                f"{engine_dir}/eval_results.csv",
+                run_id=output_path.name or id,
+                provider = getattr(engine.config, "provider", "n/a"),
+                model = getattr(engine.config, "tokenizer", "n/a"),
+                task=task,
+                dc=dc,
+                ec=ec,
+                cl=cl,
+                pm=pm,  
+                ot=ot
+            )
         
         all_outputs.append(evaluated_outputs)
         
