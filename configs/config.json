@@ -1,0 +1,4 @@
+{
+    "sambanova": ["sambanova/sambanova-llama-4-maverick.json", "sambanova/sambanova-llama-3.3.json"],
+    "groq": ["groq/groq-llama-4-maverick.json"]
+}
