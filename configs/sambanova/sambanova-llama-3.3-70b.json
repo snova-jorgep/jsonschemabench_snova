@@ -1,0 +1,10 @@
+{
+    "base_url":"https://api.sambanova.ai/v1",
+    "api_key_variable_name": "SAMBANOVA_API_KEY",
+    "provider": "sambanova",
+    "model":"Meta-Llama-3.3-70B-Instruct",
+    "tokenizer":"meta-llama/Llama-3.3-70B-Instruct",
+    "temperature":0.0,
+    "max_tokens":4096,
+    "max_context_length":128000
+}
