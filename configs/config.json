@@ -8,5 +8,10 @@
         "fireworks/fireworks-llama-3.1-405b.json", "fireworks/fireworks-llama-3.3-70b.json",
         "fireworks/fireworks-llama-4-maverick.json", "fireworks/fireworks-llama-4-scout.json",
          "fireworks/fireworks-deepseek-r1.json", "fireworks/fireworks-deepseek-v3.json"
+        ],
+    "together": [
+        "together/together-llama-3.1-405b.json", "together/together-llama-3.3-70b.json",
+        "together/together-llama-4-maverick.json", "together/together-llama-4-scout.json",
+         "together/together-deepseek-r1.json", "together/together-deepseek-v3.json"
         ]
 }
