@@ -1,0 +1,10 @@
+{
+    "base_url":"https://api.fireworks.ai/inference/v1",
+    "api_key_variable_name": "FIREWORKS_API_KEY",
+    "provider": "fireworks",
+    "model":"ccounts/fireworks/models/deepseek-v3-0324",
+    "tokenizer":"deepseek-ai/DeepSeek-V3",
+    "temperature":0.0,
+    "max_tokens":20480,
+    "max_context_length":160000
+}
