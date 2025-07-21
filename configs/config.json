@@ -13,5 +13,9 @@
         "together/together-llama-3.1-405b.json", "together/together-llama-3.3-70b.json",
         "together/together-llama-4-maverick.json", "together/together-llama-4-scout.json",
          "together/together-deepseek-r1.json", "together/together-deepseek-v3.json"
-        ]
+        ],
+    "cerebras": [
+        "cerebras/cerebras-llama-4-maverick.json", "cerebras/cerebras-llama-3.3-70b.json",
+        "cerebras/cerebras-qwen-3-32b.json"
+    ]
 }
