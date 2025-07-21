@@ -1,5 +1,9 @@
 target
 tmp
+.env
+.venv
+venv/
+outputs
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

@@ -18,7 +18,7 @@ if __name__ == "__main__":
         engine_config = loads(f.readline())
         outputs = [
             from_dict(GenerationOutput, loads(line), config=dacite_config)
-            for line in f.readlines()[1:]
+            for line in f.readlines()[0:]
         ]
 
     task_outputs: Dict[str, List[GenerationOutput]] = {}
@@ -33,7 +33,7 @@ if __name__ == "__main__":
     declared_coverage = []
     empirical_coverage = []
     for outputs in task_outputs.values():
-        dc, ec, cl, pm, ot = evaluate(outputs)
+        dc, ec, cl, pm, ot, _ = evaluate(outputs)
 
         compliance.append(cl)
         perf_metrics.append(pm)

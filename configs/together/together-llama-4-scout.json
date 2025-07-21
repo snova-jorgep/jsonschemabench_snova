@@ -1,0 +1,10 @@
+{
+    "base_url":"https://api.together.xyz/v1",
+    "api_key_variable_name": "TOGETHER_API_KEY",
+    "provider": "together",
+    "model":"meta-llama/Llama-4-Scout-17B-16E-Instruct",
+    "tokenizer":"meta-llama/Llama-4-Scout-17B-16E",
+    "temperature":0.0,
+    "max_tokens":32000,
+    "max_context_length":1000000
+}

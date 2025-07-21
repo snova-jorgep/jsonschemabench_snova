@@ -56,16 +56,20 @@ def validate_json_schema(instance: Schema, schema: Schema) -> bool:
 
 def evaluate(
     outputs: List[GenerationOutput],
-) -> Tuple[Metric, Metric, Metric, AggregatedPerfMetrics, Metric]:
+) -> Tuple[Metric, Metric, Metric, AggregatedPerfMetrics, Metric, List[GenerationOutput]]:
     output_tokens_list = []
     declared_coverage_list = []
     empirical_coverage_list = []
+    evaluated_outputs = []
 
     for generation_output in outputs:
         generation = generation_output.generation
         schema = generation_output.schema
 
         if schema is None or generation is None:
+            generation_output.metadata.failure=True
+            generation_output.metadata.failure_type="Empty generation or schema"
+            evaluated_outputs.append(generation_output)
             continue
 
         if generation_output.metadata.compile_status.code == CompileStatusCode.OK:
@@ -77,13 +81,21 @@ def evaluate(
             json_object = loads(generation)
         except Exception:
             empirical_coverage_list.append(0)
+            generation_output.metadata.failure=True
+            generation_output.metadata.failure_type="Generation is not json parsable"
+            evaluated_outputs.append(generation_output)
             continue
 
         if not validate_json_schema(json_object, schema):
             empirical_coverage_list.append(0)
+            generation_output.metadata.failure=True
+            generation_output.metadata.failure_type="Generated json is not instance of the provided schema"
+            evaluated_outputs.append(generation_output)
             continue
 
         empirical_coverage_list.append(1)
+        generation_output.metadata.failure=False
+        evaluated_outputs.append(generation_output)
         output_tokens_list.append(generation_output.token_usage.output_tokens)
 
     ttft_list = [
@@ -126,4 +138,5 @@ def evaluate(
             gct=Metric.from_values(gct_list),
         ),
         Metric.from_values(output_tokens_list),
+        evaluated_outputs
     )

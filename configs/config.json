@@ -1,0 +1,21 @@
+{
+    "sambanova": [
+        "sambanova/sambanova-llama-4-maverick.json", "sambanova/sambanova-llama-3.3-70b.json",
+        "sambanova/sambanova-deepseek-v3.json", "sambanova/sambanova-deepseek-r1.json"
+    ],
+    "groq": ["groq/groq-llama-4-maverick.json", "groq/groq-llama-4-scout.json", "groq/groq-qwen-3-32b.json"],
+    "fireworks": [
+        "fireworks/fireworks-llama-3.1-405b.json", "fireworks/fireworks-llama-3.3-70b.json",
+        "fireworks/fireworks-llama-4-maverick.json", "fireworks/fireworks-llama-4-scout.json",
+         "fireworks/fireworks-deepseek-r1.json", "fireworks/fireworks-deepseek-v3.json"
+        ],
+    "together": [
+        "together/together-llama-3.1-405b.json", "together/together-llama-3.3-70b.json",
+        "together/together-llama-4-maverick.json", "together/together-llama-4-scout.json",
+         "together/together-deepseek-r1.json", "together/together-deepseek-v3.json"
+        ],
+    "cerebras": [
+        "cerebras/cerebras-llama-4-maverick.json", "cerebras/cerebras-llama-3.3-70b.json",
+        "cerebras/cerebras-qwen-3-32b.json"
+    ]
+}
