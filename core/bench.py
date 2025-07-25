@@ -87,6 +87,7 @@ def bench(
             total=safe_min(len(dataset), limit),
             desc=task,
             file=sys.stdout,
+            #TODO add thread_id
         ):
             with disable_print(): # comment to debug
                 schema = engine.adapt_schema(schema)
