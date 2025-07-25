@@ -15,6 +15,8 @@ from core.types import (
     DecodingStatusCode,
 )
 
+MAX_RETRIES=3
+TIMEOUT=30
 
 @dataclass
 class OpenAICompatibleConfig(EngineConfig):
@@ -43,6 +45,8 @@ class OpenAICompatibleEngine(Engine[OpenAICompatibleConfig]):
         self.client = OpenAI(
             api_key=os.getenv(self.config.api_key_variable_name),
             base_url=self.config.base_url,
+            timeout=TIMEOUT,
+            max_retries=MAX_RETRIES
         )
          
         self.tokenizer = AutoTokenizer.from_pretrained(self.config.tokenizer)
