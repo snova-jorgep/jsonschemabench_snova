@@ -38,8 +38,15 @@ class Dataset:
             The configuration for the dataset.
         """
         self.config = config
-        self.dataset = load_dataset(
+        self._full_dataset = load_dataset(
             path=DATASET_HUGGINGFACE_PATH, name=config.dataset_name, split="test"
+        )
+        
+        # Apply limit here
+        self.dataset = (
+            self._full_dataset
+            if config.limit is None
+            else self._full_dataset.select(range(min(config.limit, len(self._full_dataset))))
         )
 
     def __len__(self):
@@ -64,11 +71,6 @@ class Dataset:
     def iter(
         self, messages_formatter: MessagesFormatter
     ) -> Iterator[Tuple[List[Message], Schema]]:
-        iterator = (
-            self.dataset
-            if self.config.limit is None
-            else self.dataset.take(self.config.limit)
-        )
-        for item in iterator:
+        for item in self.dataset:
             schema = loads(item[DATASET_SCHEMA_COLUMN])
             yield messages_formatter(self.config.dataset_name, schema), schema

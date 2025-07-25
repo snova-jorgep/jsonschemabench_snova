@@ -13,7 +13,7 @@ CURRENT_PATH = pathlib.Path(__file__).resolve().parent
 CONFIG_ROOT = CURRENT_PATH / "configs"
 CONFIG_FILE_PATH = CONFIG_ROOT / "config.json"
 OUTPUT_DIR = CURRENT_PATH / "outputs"
-LIMIT = 1
+LIMIT = 100
 
 def load_json_config(path):
     try:
