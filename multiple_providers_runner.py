@@ -44,8 +44,10 @@ def run_provider_benchmarks(provider, models, output_path):
 
     for model in models:
         print(f"[{provider}] Running benchmark for model: {model}")
+        datasets_to_run = DATASET_NAMES.copy()
+        datasets_to_run.remove("Github_ultra")
         run_bench(
-            tasks=DATASET_NAMES,
+            tasks=datasets_to_run,
             limit=LIMIT,
             config_path=CONFIG_ROOT / model,
             output_path=provider_output_path,
