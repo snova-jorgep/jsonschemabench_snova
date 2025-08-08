@@ -14,6 +14,6 @@ torch==2.6.0
 tqdm==4.67.1
 transformers==4.49.0
 dacite==1.9.2
-python-dotenv==1.0.1
+python-dotenv==1.1.1
 openai==1.95.1
 boto3==1.39.4
