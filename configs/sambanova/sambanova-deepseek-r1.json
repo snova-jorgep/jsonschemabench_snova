@@ -2,7 +2,7 @@
     "base_url":"https://api.sambanova.ai/v1",
     "api_key_variable_name": "SAMBANOVA_API_KEY",
     "provider": "sambanova",
-    "model":"DeepSeek-Rq-0528",
+    "model":"DeepSeek-R1-0528",
     "tokenizer":"deepseek-ai/DeepSeek-R1",
     "temperature":0.0,
     "max_tokens":512,
