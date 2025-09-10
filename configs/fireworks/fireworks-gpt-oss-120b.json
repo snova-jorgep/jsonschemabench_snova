@@ -1,0 +1,10 @@
+{
+    "base_url":"https://api.fireworks.ai/inference/v1",
+    "api_key_variable_name": "FIREWORKS_API_KEY",
+    "provider": "fireworks",
+    "model":"accounts/fireworks/models/gpt-oss-120b",
+    "tokenizer":"openai/gpt-oss-120b",
+    "temperature":0.0,
+    "max_tokens":512,
+    "max_context_length":32000
+}
