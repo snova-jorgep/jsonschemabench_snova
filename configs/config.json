@@ -3,7 +3,8 @@
         "sambanova/sambanova-llama-4-maverick.json", "sambanova/sambanova-llama-3.3-70b.json",
         "sambanova/sambanova-deepseek-v3.json", "sambanova/sambanova-deepseek-r1.json",
         "sambanova/sambanova-qwen3-32b.json", "sambanova/sambanova-deepseek-v3.1",
-        "sambanova/sambanova-gpt-oss-120b.json"
+        "sambanova/sambanova-gpt-oss-120b.json", "sambanova/sambanova-llama-3.1-8b", 
+        "sambanova/sambanova-deepseek-v3.1-terminus"
     ],
     "groq": [
         "groq/groq-llama-4-maverick.json", "groq/groq-llama-4-scout.json", "groq/groq-qwen-3-32b.json",
@@ -12,17 +13,20 @@
     "fireworks": [
         "fireworks/fireworks-llama-3.1-405b.json", "fireworks/fireworks-llama-3.3-70b.json",
         "fireworks/fireworks-llama-4-maverick.json", "fireworks/fireworks-llama-4-scout.json",
-         "fireworks/fireworks-deepseek-r1.json", "fireworks/fireworks-deepseek-v3.json",
-         "fireworks/fireworks-deepseek-v3.1", "fireworks/fireworks-gpt-oss-120b.json"
+        "fireworks/fireworks-deepseek-r1.json", "fireworks/fireworks-deepseek-v3.json",
+        "fireworks/fireworks-deepseek-v3.1", "fireworks/fireworks-gpt-oss-120b.json",  
+        "fireworks/fireworks-llama-3.1-8b", "fireworks/fireworks-deepseek-v3.1-terminus"
         ],
     "together": [
         "together/together-llama-3.1-405b.json", "together/together-llama-3.3-70b.json",
         "together/together-llama-4-maverick.json", "together/together-llama-4-scout.json",
-         "together/together-deepseek-r1.json", "together/together-deepseek-v3.json",
-         "together/together-deepseek-v3.1", "together/together-gpt-oss-120b.json"
+        "together/together-deepseek-r1.json", "together/together-deepseek-v3.json",
+        "together/together-deepseek-v3.1", "together/together-gpt-oss-120b.json",
+        "together/together-llama-3.1-8b"
         ],
     "cerebras": [
         "cerebras/cerebras-llama-4-scout.json", "cerebras/cerebras-llama-3.3-70b.json",
-        "cerebras/cerebras-qwen-3-32b.json", "cerebras/cerebras-gpt-oss-120b.json"
+        "cerebras/cerebras-qwen-3-32b.json", "cerebras/cerebras-gpt-oss-120b.json",
+        "erebras/cerebras-llama-3.1-8b"
     ]
 }
