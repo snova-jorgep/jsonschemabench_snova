@@ -1,0 +1,10 @@
+{
+    "base_url":"https://api.novita.ai/openai/v1",
+    "api_key_variable_name": "NOVITA_API_KEY",
+    "provider": "novita",
+    "model":"qwen/qwen3-32b-fp8",
+    "tokenizer":"Qwen/Qwen3-32B",
+    "temperature":0.0,
+    "max_tokens":512,
+    "max_context_length":40000
+}
