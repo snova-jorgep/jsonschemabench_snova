@@ -2,9 +2,9 @@
     "sambanova": [
         "sambanova/sambanova-llama-4-maverick.json", "sambanova/sambanova-llama-3.3-70b.json",
         "sambanova/sambanova-deepseek-v3.json", "sambanova/sambanova-deepseek-r1.json",
-        "sambanova/sambanova-qwen3-32b.json", "sambanova/sambanova-deepseek-v3.1.json",
+        "sambanova/sambanova-qwen-3-32b.json", "sambanova/sambanova-deepseek-v3.1.json",
         "sambanova/sambanova-gpt-oss-120b.json", "sambanova/sambanova-llama-3.1-8b.json", 
-        "sambanova/sambanova-deepseek-v3.1-terminus.json"
+        "sambanova/sambanova-deepseek-v3.1-terminus.json", "sambanova/sambanova-qwen-3-235b.json"
     ],
     "groq": [
         "groq/groq-llama-4-maverick.json", "groq/groq-llama-4-scout.json", "groq/groq-qwen-3-32b.json",
@@ -15,24 +15,29 @@
         "fireworks/fireworks-llama-4-maverick.json", "fireworks/fireworks-llama-4-scout.json",
         "fireworks/fireworks-deepseek-r1.json", "fireworks/fireworks-deepseek-v3.json",
         "fireworks/fireworks-deepseek-v3.1.json", "fireworks/fireworks-gpt-oss-120b.json",  
-        "fireworks/fireworks-llama-3.1-8b.json", "fireworks/fireworks-deepseek-v3.1-terminus.json"
+        "fireworks/fireworks-llama-3.1-8b.json", "fireworks/fireworks-deepseek-v3.1-terminus.json",
+        "fireworks/fireworks-qwen-3-32b.json",  "fireworks/fireworks-qwen-3-235b.json"
     ],
     "together": [
         "together/together-llama-3.1-405b.json", "together/together-llama-3.3-70b.json",
         "together/together-llama-4-maverick.json", "together/together-llama-4-scout.json",
         "together/together-deepseek-r1.json", "together/together-deepseek-v3.json",
         "together/together-deepseek-v3.1.json", "together/together-gpt-oss-120b.json",
-        "together/together-llama-3.1-8b.json"
+        "together/together-llama-3.1-8b.json",  "together/together-qwen-3-32b.json",  
+        "together/together-qwen-3-235b.json"
     ],
     "cerebras": [
         "cerebras/cerebras-llama-4-scout.json", "cerebras/cerebras-llama-3.3-70b.json",
         "cerebras/cerebras-qwen-3-32b.json", "cerebras/cerebras-gpt-oss-120b.json",
-        "cerebras/cerebras-llama-3.1-8b.json"
+        "cerebras/cerebras-llama-3.1-8b.json", "cerebras/cerebras-qwen-3-235b.json"
     ],
     "novita": [
         "novita/novita-llama-3.3-70b.json", "novita/novita-llama-4-maverick.json",
         "novita/novita-llama-4-scout.json", "novita/novita-deepseek-r1.json", 
         "novita/novita-deepseek-v3.json", "novita/novita-deepseek-v3.1.json", 
-        "novita/novita-gpt-oss-120b.json", "novita/novita-llama-3.1-8b.json"
+        "novita/novita-gpt-oss-120b.json", "novita/novita-llama-3.1-8b.json",
+        "novita/fireworks-deepseek-v3.1-terminus.json", "novita/novita-qwen-3-32b.json", 
+        "novita/novita-qwen-3-235b.json"
+
     ]
 }
