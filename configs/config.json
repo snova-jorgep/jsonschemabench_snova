@@ -4,7 +4,8 @@
         "sambanova/sambanova-deepseek-v3.json", "sambanova/sambanova-deepseek-r1.json",
         "sambanova/sambanova-qwen-3-32b.json", "sambanova/sambanova-deepseek-v3.1.json",
         "sambanova/sambanova-gpt-oss-120b.json", "sambanova/sambanova-llama-3.1-8b.json", 
-        "sambanova/sambanova-deepseek-v3.1-terminus.json", "sambanova/sambanova-qwen-3-235b.json"
+        "sambanova/sambanova-deepseek-v3.1-terminus.json", "sambanova/sambanova-qwen-3-235b.json",
+        "sambanova/sambanova-deepseek-v3.2.json"
     ],
     "groq": [
         "groq/groq-llama-4-maverick.json", "groq/groq-llama-4-scout.json", "groq/groq-qwen-3-32b.json",
@@ -38,6 +39,5 @@
         "novita/novita-gpt-oss-120b.json", "novita/novita-llama-3.1-8b.json",
         "novita/fireworks-deepseek-v3.1-terminus.json", "novita/novita-qwen-3-32b.json", 
         "novita/novita-qwen-3-235b.json"
-
     ]
 }
