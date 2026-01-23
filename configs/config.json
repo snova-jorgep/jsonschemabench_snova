@@ -33,6 +33,7 @@
         "novita/novita-llama-3.3-70b.json", "novita/novita-llama-4-maverick.json",
         "novita/novita-llama-4-scout.json", "novita/novita-deepseek-r1.json", 
         "novita/novita-deepseek-v3.json", "novita/novita-deepseek-v3.1.json", 
-        "novita/novita-gpt-oss-120b.json", "novita/novita-llama-3.1-8b.json"
+        "novita/novita-gpt-oss-120b.json", "novita/novita-llama-3.1-8b.json",
+        "novita/novita-deepseek-v3.1-terminus.json"
     ]
 }
