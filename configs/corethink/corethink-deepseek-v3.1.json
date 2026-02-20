@@ -1,0 +1,10 @@
+{
+    "base_url":"https://api.corethink.ai/v1/sambanova/code",
+    "api_key_variable_name": "CORETHINK_API_KEY",
+    "provider": "corethink",
+    "model":"DeepSeek-V3.1",
+    "tokenizer":"deepseek-ai/DeepSeek-V3.1",
+    "temperature":0.0,
+    "max_tokens":512,
+    "max_context_length":32000
+}
