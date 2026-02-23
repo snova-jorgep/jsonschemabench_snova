@@ -72,6 +72,8 @@ class OpenAICompatibleEngine(Engine[OpenAICompatibleConfig]):
             )
             return
 
+        chunk = None
+        first_token_arrival_time = None
         tokens_str: List[str] = []
         try:
             for i, chunk in enumerate(response):
@@ -91,8 +93,15 @@ class OpenAICompatibleEngine(Engine[OpenAICompatibleConfig]):
                 code=CompileStatusCode.API_BAD_RESPONSE, message=str(e)
             )
             return
-        
-        output.token_usage.output_tokens = chunk.usage.completion_tokens
+
+        if chunk is None:
+            output.metadata.compile_status = CompileStatus(
+                code=CompileStatusCode.API_BAD_RESPONSE, message="Empty stream response"
+            )
+            return
+
+        if chunk.usage is not None:
+            output.token_usage.output_tokens = chunk.usage.completion_tokens
         output.metadata.first_token_arrival_time = first_token_arrival_time
         output.metadata.compile_status = CompileStatus(code=CompileStatusCode.OK)
         output.metadata.decoding_status = DecodingStatus(code=DecodingStatusCode.OK)
