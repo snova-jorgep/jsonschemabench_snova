@@ -60,7 +60,7 @@ def bench(
         if engine.name == "openai_compatible":
             provider_dir = engine_dir / engine.config.provider
             provider_dir.mkdir(parents=True, exist_ok=True)
-            save_json_output_path = provider_dir / f"{engine.config.tokenizer.replace('/', '_')}.jsonl"
+            save_json_output_path = provider_dir / f"{engine.config.model.replace('/', '_')}.jsonl"
         else:
             save_json_output_path = engine_dir / f"{id}.jsonl"
 
@@ -111,7 +111,7 @@ def bench(
                 csv_path=results_path,
                 run_id=output_path.name or id,
                 provider = getattr(engine.config, "provider", "n/a"),
-                model = getattr(engine.config, "tokenizer", "n/a"),
+                model = getattr(engine.config, "model", "n/a"),
                 task=task,
                 dc=dc,
                 ec=ec,

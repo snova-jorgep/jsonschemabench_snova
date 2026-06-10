@@ -3,7 +3,7 @@
     "api_key_variable_name": "TOGETHER_API_KEY",
     "provider": "together",
     "model":"google/gemma-4-31B-it",
-    "tokenizer":"google/gemma-4-31B",
+    "tokenizer":"google/gemma-2-2b",
     "temperature":0.0,
     "max_tokens":512,
     "max_context_length":32000
