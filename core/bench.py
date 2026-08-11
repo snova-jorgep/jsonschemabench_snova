@@ -25,7 +25,8 @@ def bench(
     ] = FEW_SHOTS_MESSAGES_FORMATTER,
     close_engine: bool = True,
     save_outputs: bool = False,
-    output_path: Optional[str] = "outputs"
+    output_path: Optional[str] = "outputs",
+    config_env: Optional[str] = None,
 ) -> List[List[GenerationOutput]]:
     """Benchmarks an engine with specified tasks and datasets.
 
@@ -46,6 +47,9 @@ def bench(
         Whether to save the generation outputs after the benchmark.
     :param output_path: Optional[str]
         where to save the generation results
+    :param config_env: Optional[str]
+        Config env id recorded with each result row. Defaults to the registry's
+        default_config_env. See <suite-root>/config_envs.yaml.
 
     :return: List[List[GenerationOutput]]
         The generation outputs for each sample for each task.
@@ -118,7 +122,8 @@ def bench(
                 cl=cl,
                 pm=pm,  
                 ot=ot,
-                write_lock=write_lock
+                write_lock=write_lock,
+                config_env=config_env,
             )
             s3_path=f"fc-so-testing-suite/jsonschemabench_snova/{'/'.join(results_path.parts[-3:])}"
             upload_to_s3(results_path, s3_path)

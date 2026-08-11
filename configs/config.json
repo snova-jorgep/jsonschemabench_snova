@@ -1,4 +1,6 @@
 {
+    "_comment": "config_env: which deployment this run targets. Ids are defined in <suite-root>/config_envs.yaml. Override per run with --config-env <id>. Keys other than config_env/_comment are provider -> model-config lists.",
+    "config_env": "cloud-prod",
     "sambanova": [
         "sambanova/sambanova-llama-4-maverick.json", "sambanova/sambanova-llama-3.3-70b.json",
         "sambanova/sambanova-deepseek-v3.json", "sambanova/sambanova-deepseek-r1.json",

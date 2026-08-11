@@ -14,6 +14,16 @@ import threading
 from pathlib import Path
 import boto3
 
+# <repo-root> for config_env: core -> repo root. Needed when this package is
+# imported from outside the repo directory.
+sys.path.append(str(Path(__file__).resolve().parents[1]))
+
+from config_env import (  # noqa: E402
+    internal_providers_from,
+    resolve_config_env,
+    row_config_env,
+)
+
 if TYPE_CHECKING:
     from core.types import Metric, AggregatedPerfMetrics
 
@@ -152,8 +162,17 @@ def save_evaluation_results_to_csv(
     cl: Optional["Metric"] = None,
     pm: Optional["AggregatedPerfMetrics"] = None,
     ot: Optional["Metric"] = None,
-    write_lock = threading.Lock() 
+    write_lock = threading.Lock(),
+    config_env: Optional[str] = None,
+    internal_providers: Optional[set] = None,
 ):
+    # All providers append to one shared eval_results.csv, so config_env must be
+    # resolved per row from that row's provider.
+    if config_env is None:
+        config_env = resolve_config_env(None, None)
+    if internal_providers is None:
+        internal_providers = internal_providers_from(None)
+
     row = {
         "run_id": run_id,
         "provider": provider,
@@ -167,6 +186,8 @@ def save_evaluation_results_to_csv(
         "tgt": format_metric(pm.tgt) if pm else "n/a",
         "gct": format_metric(pm.gct) if pm else "n/a",
         "output_tokens": format_metric(ot),
+        # Must stay LAST: the Athena regex expects config_env trailing.
+        "config_env": row_config_env(config_env, provider, internal_providers),
     }
 
     with write_lock:
