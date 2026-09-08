@@ -11,6 +11,7 @@
         "sambanova/sambanova-deepseek-v3.2.json", "sambanova/sambanova-minmax-m2.5.json",
         "sambanova/sambanova-minmax-m2.7.json",
         "sambanova/sambanova-minmax-m3.json",
+        "sambanova/sambanova-glm-5.2.json",
         "sambanova/sambanova-gemma-4-31b.json"
     ],
     "groq": [
@@ -28,6 +29,7 @@
         "fireworks/fireworks-deepseek-v3.2.json", "fireworks/fireworks-minmax-m2.5.json",
         "fireworks/fireworks-minmax-m2.7.json",
         "fireworks/fireworks-minmax-m3.json",
+        "fireworks/fireworks-glm-5.2.json",
         "fireworks/fireworks-gemma-4-31b.json"
     ],
     "together": [
@@ -39,6 +41,7 @@
         "together/together-qwen-3-235b.json",  "together/together-minmax-m2.5.json",
         "together/together-minmax-m2.7.json",
         "together/together-minmax-m3.json",
+        "together/together-glm-5.2.json",
         "together/together-gemma-4-31b.json"
     ],
     "cerebras": [
@@ -57,6 +60,7 @@
         "novita/novita-minmax-m2.5.json",
         "novita/novita-minmax-m2.7.json",
         "novita/novita-minmax-m3.json",
+        "novita/novita-glm-5.2.json",
         "novita/novita-gemma-4-31b.json"
     ],
     "corethink": [
