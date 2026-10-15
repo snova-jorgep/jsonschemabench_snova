@@ -18,6 +18,19 @@ from core.types import (
 MAX_RETRIES=3
 TIMEOUT=30
 
+
+class RawTokenizerAdapter:
+    """Adapts tokenizers.Tokenizer to the encode()/decode() surface AutoTokenizer exposes."""
+
+    def __init__(self, tokenizer):
+        self._tokenizer = tokenizer
+
+    def encode(self, text: str) -> List[int]:
+        return self._tokenizer.encode(text).ids
+
+    def decode(self, ids: List[int]) -> str:
+        return self._tokenizer.decode(ids)
+
 @dataclass
 class OpenAICompatibleConfig(EngineConfig):
     model: str
@@ -48,8 +61,19 @@ class OpenAICompatibleEngine(Engine[OpenAICompatibleConfig]):
             timeout=TIMEOUT,
             max_retries=MAX_RETRIES
         )
-         
-        self.tokenizer = AutoTokenizer.from_pretrained(self.config.tokenizer)
+
+        try:
+            self.tokenizer = AutoTokenizer.from_pretrained(self.config.tokenizer)
+        except ValueError as e:
+            # Some newer HF repos ship a tokenizer_config.json with a
+            # tokenizer_class (e.g. "TokenizersBackend") that only exists in
+            # transformers>=5. Fall back to loading tokenizer.json directly
+            # via the `tokenizers` library, which ignores tokenizer_class.
+            if "does not exist or is not currently imported" not in str(e):
+                raise
+            from tokenizers import Tokenizer as RawTokenizer
+
+            self.tokenizer = RawTokenizerAdapter(RawTokenizer.from_pretrained(self.config.tokenizer))
 
 
     def _generate(self, output: GenerationOutput) -> None:
