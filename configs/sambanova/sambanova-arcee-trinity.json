@@ -1,0 +1,10 @@
+{
+    "base_url":"https://fast-cloud-snova-ai-dev-3-api.cloud.snova.ai/v1",
+    "api_key_variable_name": "SAMBANOVA_API_KEY",
+    "provider": "sambanova",
+    "model":"Arcee-Trinity",
+    "tokenizer":"arcee-ai/Trinity-Large-Preview",
+    "temperature":0.0,
+    "max_tokens":512,
+    "max_context_length":131072
+}

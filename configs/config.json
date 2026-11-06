@@ -15,7 +15,8 @@
         "sambanova/sambanova-glm-5.2.json",
         "sambanova/sambanova-glm-5.3.json",
         "sambanova/sambanova-kimi-k3.json",
-        "sambanova/sambanova-gemma-4-31b.json"
+        "sambanova/sambanova-gemma-4-31b.json",
+        "sambanova/sambanova-arcee-trinity.json"
     ],
     "groq": [
         "groq/groq-llama-4-maverick.json", "groq/groq-llama-4-scout.json", "groq/groq-qwen-3-32b.json",
