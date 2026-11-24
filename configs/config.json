@@ -37,7 +37,8 @@
         "fireworks/fireworks-glm-5.2.json",
         "fireworks/fireworks-glm-5.3.json",
         "fireworks/fireworks-kimi-k3.json",
-        "fireworks/fireworks-gemma-4-31b.json"
+        "fireworks/fireworks-gemma-4-31b.json",
+        "fireworks/fireworks-nemotron-3-ultra.json"
     ],
     "together": [
         "together/together-llama-3.1-405b.json", "together/together-llama-3.3-70b.json",
